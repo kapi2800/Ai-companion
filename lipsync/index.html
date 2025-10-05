@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Companion Lipsync Test</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 900px;
+        width: 100%;
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      .subtitle {
+        color: #666;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 14px;
+      }
+
+      .companion-area {
+        background: #f8f9ff;
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        margin-bottom: 30px;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .companion-image {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        margin-bottom: 20px;
+      }
+
+      .face-base {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 120px;
+      }
+
+      .mouth-image {
+        width: 200px;
+        height: auto;
+        margin-top: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.1s ease;
+      }
+
+      .viseme-label {
+        font-size: 24px;
+        font-weight: bold;
+        color: #667eea;
+        margin-top: 10px;
+      }
+
+      .viseme-chart {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+
+      .viseme-item {
+        background: white;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        min-width: 60px;
+        text-align: center;
+        transition: all 0.3s;
+      }
+
+      .viseme-item.active {
+        background: #667eea;
+        border-color: #667eea;
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .viseme-char {
+        display: block;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      label {
+        font-weight: 600;
+        color: #555;
+        font-size: 14px;
+      }
+
+      input[type="file"] {
+        padding: 10px;
+        border: 2px dashed #667eea;
+        border-radius: 8px;
+        background: #f8f9ff;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      input[type="file"]:hover {
+        border-color: #764ba2;
+        background: #f0f1ff;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        flex: 1;
+        min-width: 120px;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        color: white;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-secondary {
+        background: #6c757d;
+      }
+
+      .btn-secondary:hover:not(:disabled) {
+        background: #5a6268;
+      }
+
+      .btn-danger {
+        background: #dc3545;
+      }
+
+      .btn-danger:hover:not(:disabled) {
+        background: #c82333;
+      }
+
+      .btn-success {
+        background: #28a745;
+      }
+
+      .btn-success:hover:not(:disabled) {
+        background: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .info-panel {
+        background: #d1ecf1;
+        border-left: 4px solid #17a2b8;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      .info-panel h3 {
+        color: #0c5460;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+
+      .info-panel p {
+        color: #0c5460;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .status {
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .status.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .status.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .status.info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      audio {
+        width: 100%;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🤖 AI Companion Lipsync Test</h1>
+      <p class="subtitle">Real-time mouth animation based on audio analysis</p>
+
+      <div class="info-panel">
+        <h3>📝 Setup Instructions:</h3>
+        <p>
+          1. Place your mouth images in <strong>public/mouths/</strong> folder
+        </p>
+        <p>
+          2. Name them:
+          <strong
+            >A.png, B.png, C.png, D.png, E.png, F.png, G.png, H.png,
+            X.png</strong
+          >
+        </p>
+        <p>
+          3. Upload an audio file and click Play to see the lipsync in action!
+        </p>
+        <p>
+          4. After playing, click <strong>Export JSON</strong> to download
+          viseme data with timestamps!
+        </p>
+      </div>
+
+      <div id="statusMessage" class="status hidden"></div>
+
+      <div class="companion-area">
+        <div class="companion-image">
+          <div class="face-base" id="faceBase">
+            <img
+              id="mouthImage"
+              class="mouth-image"
+              src="mouths/X.png"
+              alt="Mouth shape"
+            />
+          </div>
+        </div>
+        <div class="viseme-label">
+          Current Viseme: <span id="visemeText">X</span>
+        </div>
+        <div class="viseme-chart" id="visemeChart"></div>
+      </div>
+
+      <div class="controls">
+        <div class="control-group">
+          <label for="audioFile">Select Audio File (MP3, WAV, OGG):</label>
+          <input type="file" id="audioFile" accept="audio/*" />
+        </div>
+
+        <div class="button-group">
+          <button id="playBtn" class="btn-primary" disabled>▶️ Play</button>
+          <button id="pauseBtn" class="btn-secondary" disabled>⏸️ Pause</button>
+          <button id="stopBtn" class="btn-danger" disabled>⏹️ Stop</button>
+          <button id="exportBtn" class="btn-success" disabled>
+            📥 Export JSON
+          </button>
+        </div>
+      </div>
+
+      <audio id="audioPlayer" controls></audio>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
