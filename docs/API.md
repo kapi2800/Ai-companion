@@ -2,49 +2,154 @@
 
 ## Current Implementation
 
-### Frontend-to-Avatar Communication
+### Chat API Endpoint
 
-The current system uses `postMessage` API for communication between the frontend and the avatar engine (iframe).
+The application currently uses a single REST API endpoint for AI chat functionality.
 
-#### Message Protocol
+**Endpoint:** `https://cyphers101.onrender.com/api/chat`
 
-**Trigger Greeting Animation**
+**Method:** POST
+
+**Request Format:**
+
 ```javascript
-// From Frontend
-iframeRef.current.contentWindow.postMessage('triggerGreeting', '*');
+{
+  "message": "User's message text",
+  "generateAudio": false  // Optional, currently not implemented
+}
+```
 
-// In Avatar Engine
-window.addEventListener('message', (event) => {
-  if (event.data === 'triggerGreeting') {
-    // Play greeting animation
-    setAnimation("Greeting");
-    setTimeout(() => setAnimation("Idle"), 4000);
-  }
+**Response Format:**
+
+```javascript
+{
+  "messages": [
+    {
+      "text": "AI response text",
+      "role": "assistant"
+    }
+  ]
+}
+```
+
+**Example Usage:**
+
+```javascript
+const response = await fetch("https://cyphers101.onrender.com/api/chat", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    message: "What is photosynthesis?",
+    generateAudio: false,
+  }),
 });
+
+const data = await response.json();
+const aiResponse = data.messages[0].text;
 ```
 
-### AI Response Generator
+### Frontend API Configuration
 
-**Function: `generateAIResponse(userMessage)`**
+Location: `frontend/src/config/api.js`
 
-Takes user input and returns educational responses.
+**Features:**
+
+- Centralized API configuration
+- Automatic retry logic (2 attempts)
+- Timeout handling (30 seconds)
+- Exponential backoff on retry
+- Error handling and user-friendly messages
+
+**Usage in Frontend:**
 
 ```javascript
-const response = generateAIResponse("What is photosynthesis?");
-// Returns: "Photosynthesis is the process by which..."
+import { sendChatMessage } from "./config/api.js";
+
+try {
+  const response = await sendChatMessage("Hello, how are you?");
+  console.log(response);
+} catch (error) {
+  console.error("Chat failed:", error.message);
+}
 ```
 
-**Supported Topics:**
-- Science (photosynthesis, gravity, DNA, cell)
-- Math (calculus, algebra, Pythagorean theorem)
-- Programming (Python, JavaScript, algorithms)
-- History (World War, Renaissance)
-- Writing (essays, grammar)
-- Study skills (time management, study techniques)
+### AI Backend Details
+
+**Technology:** Google Gemini API (gemini-1.5-flash model)
+
+**Hosting:** Render.com (free tier)
+
+**Important Notes:**
+
+- First request may take 30-60 seconds due to cold start
+- Subsequent requests typically respond in 1-3 seconds
+- No authentication required
+- No rate limiting implemented
+- Stateless (no conversation history on server)
+
+### Avatar Animation Control
+
+The avatar is integrated directly into the React application (not iframe-based).
+
+**State Management:**
+
+```javascript
+// In Avatar.jsx
+const [animation, setAnimation] = useState("Idle");
+
+// Trigger greeting
+setAnimation("Greeting");
+setTimeout(() => setAnimation("Idle"), 4000);
+```
+
+**Available Animations:**
+
+- `Idle` - Default looping animation
+- `Greeting` - Welcome gesture (4 seconds duration)
+
+### VISEME Audio Playback
+
+The avatar supports pre-recorded audio with VISEME-based lip synchronization.
+
+**Audio File Format:**
+
+- Audio: MP3, OGG, or WAV
+- VISEME Data: JSON file with matching filename
+
+**JSON Structure:**
+
+```json
+{
+  "metadata": {
+    "soundFile": "welcome.mp3",
+    "duration": 5.92
+  },
+  "mouthCues": [
+    {
+      "start": 0.0,
+      "end": 0.12,
+      "value": "X"
+    },
+    {
+      "start": 0.14,
+      "end": 0.29,
+      "value": "B"
+    }
+  ]
+}
+```
+
+**VISEME Letter Codes:** A, B, C, D, E, F, G, H, X (silence)
+
+**Location:** `frontend/public/audios/`
 
 ---
 
 ## Future API Specification
+
+**Note:** The following endpoints and features are planned but NOT currently implemented.
 
 ### REST API Endpoints
 
@@ -60,6 +165,7 @@ Accept: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "companions": [
@@ -79,6 +185,7 @@ Accept: application/json
 ```
 
 **Status Codes:**
+
 - 200: Success
 - 500: Server error
 
@@ -101,6 +208,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "roomId": "room-abc-123",
@@ -123,6 +231,7 @@ Accept: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "roomId": "room-abc-123",
@@ -148,6 +257,7 @@ Accept: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "iceServers": [
@@ -185,6 +295,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "messageId": "msg-001",
@@ -215,6 +326,7 @@ Content-Type: multipart/form-data
 ```
 
 **Response:**
+
 ```json
 {
   "recordingId": "rec-001",
@@ -234,20 +346,22 @@ Content-Type: multipart/form-data
 #### Events
 
 **1. Join Room**
+
 ```javascript
-socket.emit('join', {
-  roomId: 'room-abc-123',
-  userId: 'user-123',
-  role: 'user' // or 'companion'
+socket.emit("join", {
+  roomId: "room-abc-123",
+  userId: "user-123",
+  role: "user", // or 'companion'
 });
 
 // Server response
-socket.on('joined', (data) => {
+socket.on("joined", (data) => {
   // { roomId, userId, participants: [] }
 });
 ```
 
 **2. WebRTC Offer**
+
 ```javascript
 socket.emit('offer', {
   roomId: 'room-abc-123',
@@ -262,6 +376,7 @@ socket.on('offer', (data) => {
 ```
 
 **3. WebRTC Answer**
+
 ```javascript
 socket.emit('answer', {
   roomId: 'room-abc-123',
@@ -275,6 +390,7 @@ socket.on('answer', (data) => {
 ```
 
 **4. ICE Candidate**
+
 ```javascript
 socket.emit('candidate', {
   roomId: 'room-abc-123',
@@ -288,25 +404,27 @@ socket.on('candidate', (data) => {
 ```
 
 **5. Leave Room**
+
 ```javascript
-socket.emit('leave', {
-  roomId: 'room-abc-123',
-  userId: 'user-123'
+socket.emit("leave", {
+  roomId: "room-abc-123",
+  userId: "user-123",
 });
 
-socket.on('user-left', (data) => {
+socket.on("user-left", (data) => {
   // { roomId, userId }
 });
 ```
 
 **6. End Call**
+
 ```javascript
-socket.emit('end', {
-  roomId: 'room-abc-123',
-  reason: 'User ended call'
+socket.emit("end", {
+  roomId: "room-abc-123",
+  reason: "User ended call",
 });
 
-socket.on('call-ended', (data) => {
+socket.on("call-ended", (data) => {
   // { roomId, reason }
 });
 ```
@@ -328,20 +446,20 @@ interface UseWebRTCOptions {
 interface UseWebRTCReturn {
   // Room Management
   createRoom(): Promise<{ roomId: string }>;
-  joinRoom(roomId: string, role: 'user' | 'companion'): Promise<void>;
-  
+  joinRoom(roomId: string, role: "user" | "companion"): Promise<void>;
+
   // Media Management
   startLocalMedia(constraints?: MediaStreamConstraints): Promise<MediaStream>;
   toggleMic(enabled: boolean): void;
   toggleCamera(enabled: boolean): void;
-  
+
   // Recording
   startRecording(): void;
   stopRecording(): Promise<Blob>;
-  
+
   // Call Management
   endCall(): Promise<void>;
-  
+
   // State
   isConnected: boolean;
   localStream: MediaStream | null;
@@ -351,7 +469,7 @@ interface UseWebRTCReturn {
 
 // Usage
 const webrtc = useWebRTC({
-  stunServers: ['stun:stun.l.google.com:19302']
+  stunServers: ["stun:stun.l.google.com:19302"],
 });
 
 await webrtc.createRoom();
@@ -367,28 +485,31 @@ await webrtc.startLocalMedia();
 ```javascript
 // Generate audio with VISEME data
 async function generateSpeech(text, voiceId) {
-  const response = await fetch('https://api.elevenlabs.io/v1/text-to-speech/' + voiceId, {
-    method: 'POST',
-    headers: {
-      'Accept': 'audio/mpeg',
-      'xi-api-key': API_KEY,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      text: text,
-      model_id: 'eleven_monolingual_v1',
-      voice_settings: {
-        stability: 0.5,
-        similarity_boost: 0.5
-      }
-    })
-  });
-  
+  const response = await fetch(
+    "https://api.elevenlabs.io/v1/text-to-speech/" + voiceId,
+    {
+      method: "POST",
+      headers: {
+        Accept: "audio/mpeg",
+        "xi-api-key": API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text: text,
+        model_id: "eleven_monolingual_v1",
+        voice_settings: {
+          stability: 0.5,
+          similarity_boost: 0.5,
+        },
+      }),
+    }
+  );
+
   const audioBlob = await response.blob();
-  
+
   // Process audio to generate VISEME data
   const visemeData = await generateVISEME(audioBlob);
-  
+
   return { audioBlob, visemeData };
 }
 ```
@@ -401,27 +522,34 @@ async function generateSpeech(text, voiceId) {
 
 ```javascript
 async function getAIResponse(message, context) {
-  const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${GEMINI_API_KEY}`
-    },
-    body: JSON.stringify({
-      contents: [{
-        parts: [{
-          text: message
-        }]
-      }],
-      generationConfig: {
-        temperature: 0.7,
-        topK: 40,
-        topP: 0.95,
-        maxOutputTokens: 1024,
-      }
-    })
-  });
-  
+  const response = await fetch(
+    "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GEMINI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: message,
+              },
+            ],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.7,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 1024,
+        },
+      }),
+    }
+  );
+
   const data = await response.json();
   return data.candidates[0].content.parts[0].text;
 }
@@ -429,85 +557,102 @@ async function getAIResponse(message, context) {
 
 ---
 
-## Error Handling
+## Current Error Handling
 
-### HTTP Error Codes
+### Implemented Error Scenarios
 
-- **200 OK** - Request successful
-- **201 Created** - Resource created
-- **400 Bad Request** - Invalid request data
-- **401 Unauthorized** - Authentication required
-- **403 Forbidden** - Insufficient permissions
-- **404 Not Found** - Resource not found
-- **409 Conflict** - Resource conflict (e.g., room already exists)
-- **429 Too Many Requests** - Rate limit exceeded
-- **500 Internal Server Error** - Server error
-- **503 Service Unavailable** - Service temporarily unavailable
+**Timeout Errors:**
 
-### Error Response Format
+```javascript
+// After 30 seconds
+throw new Error("Request timed out. Please try again.");
+```
 
-```json
-{
-  "error": {
-    "code": "INVALID_ROOM_ID",
-    "message": "The specified room ID is invalid",
-    "details": {
-      "roomId": "invalid-room-123"
-    }
-  }
+**Network Errors:**
+
+```javascript
+// After 2 retry attempts
+throw new Error(
+  "Failed to connect to AI service. Please check your connection."
+);
+```
+
+**HTTP Errors:**
+
+```javascript
+// Non-200 responses
+throw new Error(`API error: ${response.status} ${response.statusText}`);
+```
+
+### Frontend Error Display
+
+Errors are caught and displayed in the chat interface:
+
+```javascript
+try {
+  const response = await sendChatMessage(input);
+  // Handle success
+} catch (error) {
+  // Display error message to user in chat
+  setMessages([
+    ...messages,
+    {
+      role: "assistant",
+      text: `Error: ${error.message}`,
+    },
+  ]);
 }
 ```
 
 ---
 
-## Rate Limiting
+## Future Enhancements
 
-### Limits (Future)
+The following features are planned for future development:
 
-- **API Requests:** 100 requests/minute per user
-- **WebSocket Messages:** 1000 messages/minute per room
-- **File Uploads:** 10 uploads/hour per user
+### Rate Limiting (Planned)
 
-### Headers
+- API request limits per user
+- WebSocket message throttling
+- File upload restrictions
 
-```http
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 95
-X-RateLimit-Reset: 1696512000
-```
+### Authentication (Planned)
 
----
+- JWT token-based authentication
+- User account management
+- Session handling
 
-## Authentication (Future)
+### Advanced Error Handling (Planned)
 
-### JWT Token Authentication
+- Detailed error codes
+- Structured error responses
+- Retry strategies for different error types
 
-```http
-Authorization: Bearer <jwt_token>
-```
+### WebSocket Support (Planned)
 
-### Token Structure
+- Real-time bidirectional communication
+- WebRTC signaling for video calls
+- Live status updates
 
-```json
-{
-  "userId": "user-123",
-  "email": "user@example.com",
-  "role": "student",
-  "exp": 1696512000
-}
-```
+### Additional Endpoints (Planned)
+
+- Companion selection API
+- Video room management
+- Recording management
+- TTS integration with ElevenLabs
 
 ---
 
-## Versioning
+## API Versioning
 
-API Version: **v1**
+Current API: Unversioned endpoint at `/api/chat`
 
-All endpoints are prefixed with `/api/v1/`
+Future versions will implement proper versioning:
 
-Future versions will use `/api/v2/`, etc.
+- `/api/v1/chat`
+- `/api/v2/chat`
 
 ---
 
-**Last Updated**: October 2024
-**Status**: Specification for Future Implementation
+**Last Updated**: October 2025
+**Status**: Current implementation documented. Future features clearly marked as planned.

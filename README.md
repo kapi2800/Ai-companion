@@ -1,335 +1,405 @@
 # AI Avatar Companion - Interactive Learning Platform
 
-An innovative web application featuring a 3D AI avatar with real-time lip synchronization for educational purposes. Built for the AI Companion Video Call & Streaming Hackathon.
-
-## Project Overview
-
-This project implements an interactive AI companion with a focus on natural, human-like interaction through advanced lip-synchronization technology. Instead of relying on traditional video streaming, [...]
+An interactive web application featuring a 3D AI avatar with VISEME-based lip synchronization. The application provides an educational AI companion powered by Google Gemini API with natural conversation capabilities and synchronized facial animations.
 
 ## Demo Screenshot
 
-Here is a screenshot of the AI Companion application in action:
-
 ![AI Companion Demo Screenshot](docs/demo.png)
 
----
+## Key Features
 
-### Key Features
+- Gemini AI Integration - Powered by Google Gemini API for intelligent responses
+- Real-time Chat Interface - Interactive conversation with AI companion
+- VISEME-based Lip Synchronization - Mouth animation synchronized with audio playback
+- 3D Avatar Rendering - ReadyPlayerMe avatar rendered with Three.js
+- Dark/Light Theme - Persistent theme switching with localStorage
+- Animation System - Greeting and idle animations with smooth transitions
+- Audio Processing Tool - Generate VISEME data from audio files
+- High Performance Rendering - 60 FPS 3D rendering
 
-- ** Gemini AI Integration** - Powered by Google Gemini API for intelligent responses
-- ** Real-time Chat** - Interactive conversation with AI companion
-- ** Real-time Lip Synchronization** - VISEME-based mouth animation synchronized with audio
-- ** 3D Avatar Rendering** - Customizable ReadyPlayerMe avatar with Three.js
-- ** Dark/Light Theme** - Persistent theme switching
-- ** Animation System** - Greeting, Idle, and dynamic state management
-- ** Audio Upload System** - Upload custom audio with automatic lip-sync generation
-- ** High Performance** - 60 FPS rendering, <50ms latency
-- ** Unified Architecture** - Single application with integrated 3D rendering
+## Technology Stack
 
-## Architecture
-
-### Tech Stack
-
-**Frontend (Unified React Application)**
+**Frontend**
 
 - React 18
 - Three.js & React Three Fiber
 - @react-three/drei
-- Lucide React (Icons)
-- CSS3 with Custom Properties
-- Vite (Development Server)
+- Vite (Build Tool)
 - Leva (Debug Controls)
-- wawa-lipsync (Audio Processing)
+- Lucide React (Icons)
 
-**AI & Backend Services**
+**Backend**
 
-- Google Gemini API (Conversational AI)
-- Deployed on Render: `https://cyphers101.onrender.com`
-- Express.js (File Upload API)
+- Google Gemini API (AI Chat)
+- Deployed Backend URL: `https://cyphers101.onrender.com/api/chat`
+- Express.js (Server Framework)
 
-**3D Avatar System**
+**Audio Processing**
 
-- React Three Fiber for 3D rendering
-- Three.js Animation System
+- wawa-lipsync (VISEME generation)
 - Web Audio API
-- VISEME Processing Engine
 
 **3D Assets**
 
 - ReadyPlayerMe Avatar (GLB format)
 - FBX Animations (Idle, Greeting)
-- Custom morph targets for VISEME
+- VISEME morph targets
 
 ## Project Structure
 
 ```
-ai-avatar-companion/
-├── frontend/                   # Main Application (React + Three.js)
+Ai-companion/
+├── frontend/                        # Main React Application
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Avatar.jsx           # 3D avatar with lip-sync
-│   │   │   ├── Experience.jsx       # 3D scene setup
+│   │   │   ├── Avatar.jsx           # 3D avatar with VISEME lip-sync
+│   │   │   ├── Experience.jsx       # Three.js scene setup
 │   │   │   ├── Sidebar.jsx          # Chat history sidebar
 │   │   │   ├── MainContent.jsx      # Main content area
 │   │   │   ├── AvatarSection.jsx    # Avatar container with Canvas
-│   │   │   └── ChatSection.jsx      # Chat interface
+│   │   │   └── ChatSection.jsx      # Chat input interface
 │   │   ├── contexts/
-│   │   │   └── ThemeContext.jsx     # Theme management
-│   │   ├── App.jsx                  # Main app logic
+│   │   │   └── ThemeContext.jsx     # Theme state management
+│   │   ├── config/
+│   │   │   └── api.js               # API endpoint configuration
+│   │   ├── App.jsx                  # Main application component
 │   │   ├── App.css
 │   │   ├── index.css
 │   │   └── main.jsx
 │   ├── public/
 │   │   ├── models/                  # GLB avatar files
 │   │   ├── animations/              # FBX animation files
-│   │   ├── audios/                  # Audio files & VISEME JSON
+│   │   ├── audios/                  # Audio files with VISEME JSON data
 │   │   └── textures/                # Background images
+│   ├── index.html
+│   ├── vite.config.js
 │   └── package.json
 │
-├── tools/                      # Audio Processing Tools
-│   ├── main.js                      # VISEME generator tool
-│   ├── index.html                   # Web interface
-│   └── package.json
+├── tools/                           # Audio Processing Tools
+│   ├── main.js                      # VISEME generator script
+│   ├── index.html                   # Web interface for tool
+│   ├── package.json
+│   └── sample.mp3                   # Sample audio file
 │
-├── docs/                       # Documentation
-│   ├── ARCHITECTURE.md
-│   └── API.md
+├── docs/                            # Project Documentation
+│   ├── ARCHITECTURE.md              # Architecture overview
+│   ├── API.md                       # API documentation
+│   └── demo.png                     # Demo screenshot
 │
-├── backend-deprecated/         # [OLD CODE - Can be deleted]
-│
-├── .github/
-│   └── copilot-instructions.md
-├── .gitignore
-├── PROJECT_SUMMARY.md
-├── SETUP.md
-└── README.md
+├── chat-demo.html                   # Standalone chat demo (no 3D avatar)
+├── SETUP.md                         # Detailed setup instructions
+├── PROJECT_SUMMARY.md               # Project summary
+├── GEMINI_API_INTEGRATION.md        # Gemini API integration guide
+├── VISEME_FORMAT.md                 # VISEME format specification
+└── README.md                        # This file
 ```
 
-## Getting Started
+## Prerequisites
 
-### Prerequisites
+- Node.js 18 or higher
+- npm (comes with Node.js)
+- Modern web browser (Chrome, Firefox, Safari, or Edge)
+- Internet connection (for Gemini API calls)
 
-- Node.js 18+
-- npm or yarn
-- Modern web browser (Chrome, Firefox, Edge)
+## Installation and Running
 
-### Installation & Running
+### 1. Main Application (Frontend with 3D Avatar)
 
-#### Option 1: Quick Start (Frontend Only)
+This is the primary application featuring the 3D avatar with AI chat capabilities.
 
-1. **Clone the repository**
+```bash
+# Navigate to project root
+cd Ai-companion
 
-   ```bash
-   git clone <repository-url>
-   cd Ai-companion
-   ```
+# Navigate to frontend directory
+cd frontend
 
-2. **Install frontend dependencies**
+# Install dependencies
+npm install
 
-   ```bash
-   cd frontend
-   npm install
-   ```
+# Start development server
+npm run dev
+```
 
-3. **Start the frontend**
+The application will be available at: **http://localhost:5173**
 
-   ```bash
-   npm run dev
-   ```
+The frontend connects to the deployed backend at: `https://cyphers101.onrender.com/api/chat`
 
-   - Frontend runs on: http://localhost:3000
-   - AI responses powered by deployed Gemini API
+**Note:** First request to the backend may take 30-60 seconds due to cold start on free hosting.
 
-#### Option 2: Full Setup (with File Upload API)
+### 2. Standalone Chat Demo (Without 3D Avatar)
 
-1. **Install frontend dependencies** (as above)
+A simple HTML file to test the Gemini API chat functionality without the 3D avatar.
 
-2. **Install API server dependencies**
+```bash
+# From project root
+cd Ai-companion
 
-   ```bash
-   cd ../api
-   npm install
-   ```
+# Open in browser (macOS)
+open chat-demo.html
 
-3. **Start both servers**
+# Or open manually in any browser
+# File location: /Ai-companion/chat-demo.html
+```
 
-   ```bash
-   # Terminal 1: API Server
-   cd api
-   node server.js
-   # Runs on: http://localhost:5001
+This demo provides a basic chat interface to verify API connectivity.
 
-   # Terminal 2: Frontend
-   cd frontend
-   npm run dev
-   # Runs on: http://localhost:3000
-   ```
+### 3. Audio Processing Tool (VISEME Generator)
 
-4. **Access the Application**
-   - Open http://localhost:3000 in your browser
-   - The 3D avatar loads automatically
-   - Chat with the AI using the input at the bottom
+Tool for generating VISEME data from audio files for lip synchronization.
 
-That's it! The chatbot is now powered by your deployed Gemini API! 🚀
+```bash
+# Navigate to tools directory
+cd Ai-companion/tools
+
+# Install dependencies
+npm install
+
+# Start the tool
+npm run dev
+```
+
+The tool will be available at: **http://localhost:5173**
+
+**Usage:**
+
+1. Open the tool in your browser
+2. Upload an audio file (MP3, WAV, or OGG)
+3. The tool generates a JSON file with VISEME cue data
+4. Place both audio file and JSON in `frontend/public/audios/`
+
+### Building for Production
+
+To create a production build of the frontend:
+
+```bash
+cd frontend
+npm run build
+```
+
+The production-ready files will be in the `frontend/dist/` directory.
 
 ## How It Works
 
 ### VISEME-Based Lip Synchronization
 
-Our innovative approach uses VISEME (Visual Phoneme) codes instead of traditional video streaming:
+The application uses VISEME (Visual Phoneme) codes for lip synchronization:
 
-1. **Audio Input** → Audio file or TTS output
-2. **Frequency Analysis** → Extract phoneme data
-3. **VISEME Mapping** → Convert phonemes to mouth shapes
-4. **3D Animation** → Apply morph targets in real-time
-5. **Synchronized Output** → Natural lip movement with audio
+1. Audio Input - Pre-recorded audio files or TTS output
+2. VISEME Processing - Audio is processed by wawa-lipsync tool
+3. JSON Generation - Tool generates timestamped VISEME codes
+4. 3D Animation - Avatar's morph targets are updated in real-time
+5. Synchronized Playback - Mouth movements match audio playback
 
 ### VISEME Code System
 
-We use 15 standard VISEME mouth positions:
+The system uses standard VISEME mouth positions based on phoneme shapes:
 
-- **A-H**: Various vowel and consonant shapes
-- **I-U**: Extended mouth positions
-- **X**: Silence/neutral position
+- A-H: Various vowel and consonant mouth shapes
+- I-U: Extended mouth positions
+- X: Silence or neutral position
 
-Each VISEME is mapped to specific phonemes and rendered as 3D morph targets on the avatar model.
+Each VISEME corresponds to specific phonemes and is rendered using 3D morph targets on the avatar model.
 
-## 🎨 Features in Detail
+### Chat Flow
 
-### 1. Avatar Control System
+1. User enters message in chat interface
+2. Frontend sends POST request to backend API
+3. Backend forwards request to Google Gemini API
+4. Gemini processes the message and generates response
+5. Response is returned to frontend and displayed
+6. Avatar can play pre-recorded audio responses with lip-sync
 
-- Enable/Disable toggle for avatar
-- Status indicators (Active/Stopped)
-- Greeting animation on re-enable
-- Loading states with smooth transitions
+## Features Details
 
-### 2. AI-Powered Chat Interface
+### Avatar System
 
-- **Gemini AI Integration**: Intelligent responses powered by Google Gemini
-- **Real-time Conversation**: Natural language understanding
-- **Typing Indicators**: Visual feedback during AI processing
-- **Error Handling**: Graceful fallbacks and retry logic
-- **Fast Response**: Typically 1-3 seconds (after cold start)
-- Message history and context awareness
+- Enable/disable toggle for avatar rendering
+- Visual status indicators
+- Greeting animation on activation
+- Idle animation during inactivity
+- Smooth state transitions
 
-### 3. Theme System
+### Chat Interface
 
-- Dark and Light modes
-- Persistent storage (localStorage)
-- Smooth transitions
-- Consistent across all components
+- Real-time message display
+- Typing indicators during AI processing
+- Error handling with user-friendly messages
+- Message history display
+- Responsive layout
 
-### 4. Animation System
+### Theme System
 
-- **Greeting Animation**: Plays on load and re-enable
-- **Idle Animation**: Default state
-- Smooth transitions between states
-- Frame-perfect synchronization
+- Dark and light modes
+- Persistent theme selection via localStorage
+- Smooth theme transitions
+- Consistent styling across components
 
-##  Testing
+### Animation System
 
-### Chat with the AI:
+- Greeting animation on load
+- Idle animation loop
+- VISEME-based lip-sync animation
+- FBX animation file support
+- GLB model support with morph targets
 
-Try asking anything! The Gemini AI can handle:
+## Testing the Application
 
-- **General Knowledge**: "What is photosynthesis?"
-- **Math & Science**: "Explain calculus"
-- **Programming**: "How do I learn Python?"
-- **Creative Writing**: "Help me write an essay"
-- **Study Tips**: "What are the best study techniques?"
-- **Casual Chat**: "Hello, how are you?"
-- **Any Topic**: The AI has broad knowledge!
+### Test Chat Functionality
 
-### Audio Upload Testing:
+Start a conversation with the AI companion. Example queries:
 
-1. Click "Audio Upload" button in sidebar
-2. Upload an MP3/WAV/OGG file
-3. Wait for processing (wawa-lipsync generates VISEME data)
-4. Use Leva controls to play the audio
-5. Watch the avatar's mouth sync with your audio!
+- "What is artificial intelligence?"
+- "Explain quantum physics"
+- "How do I learn programming?"
+- "What are good study techniques?"
 
-##  Future Enhancements
+### Test Avatar Features
 
-### Phase 1: WebRTC Integration
+1. Toggle avatar on/off using the sidebar control
+2. Observe greeting animation when avatar is enabled
+3. Watch idle animation during inactivity
+4. Use Leva debug panel (development mode) to control animations
 
-- [ ] WebSocket signaling server
-- [ ] Peer-to-peer video connections
-- [ ] Multiple companion selection
-- [ ] ICE/TURN server configuration
+### Test Audio Playback
 
-### Phase 2: AI Integration
+The application includes sample audio files with VISEME data:
 
-- [ ] ElevenLabs TTS integration
-- [ ] Google Gemini AI backend
-- [ ] Real-time VISEME generation
-- [ ] Context-aware responses
+- `welcome.mp3` / `welcome.json`
 
-### Phase 3: Advanced Features
+Use the Leva debug controls in development mode to trigger audio playback and observe lip synchronization.
 
-- [ ] Voice input (Speech-to-Text)
-- [ ] Emotion detection
-- [ ] Multiple avatar models
-- [ ] Recording functionality
-- [ ] Mobile app version
+## Development Notes
 
-##  Development
+### Adding Custom Audio with Lip-Sync
 
-### Audio Processing Tool
+To add new audio files with lip synchronization:
 
-To generate VISEME data from audio:
+1. Generate VISEME data using the tools:
 
-```bash
-cd tools
-npm install
-node main.js
+   ```bash
+   cd tools
+   npm install
+   npm run dev
+   ```
+
+2. Upload your audio file through the web interface
+3. Download the generated JSON file
+4. Place both files in `frontend/public/audios/`:
+
+   ```
+   frontend/public/audios/
+   ├── your-audio.mp3
+   └── your-audio.json
+   ```
+
+5. Update the Avatar component to reference the new audio file
+
+### Adding New Avatar Models
+
+To use a different 3D avatar:
+
+1. Create or obtain a GLB format avatar from ReadyPlayerMe
+2. Ensure the model has VISEME morph targets (A, B, C, D, E, F, G, H, X, etc.)
+3. Place the GLB file in `frontend/public/models/`
+4. Update the model path in `Avatar.jsx`
+5. Test all VISEME animations
+
+### Project Architecture
+
+**Frontend Architecture:**
+
+- React for UI components
+- Three.js for 3D rendering via React Three Fiber
+- Context API for theme management
+- Vite for fast development and building
+
+**Backend Architecture:**
+
+- Express.js server acts as proxy to Gemini API
+- Deployed on Render (free tier with cold starts)
+- No database or session management
+- Stateless HTTP REST API
+
+**Communication Flow:**
+
+```
+User Input → Frontend → Backend (Express) → Gemini API
+          ← Response  ←        ←
 ```
 
-This uses the modified rhubarb-lip-sync library to convert audio files into VISEME JSON format.
+## Performance Considerations
 
-### Adding New Avatars
+- Target 60 FPS for 3D rendering
+- Lip-sync latency under 50ms
+- Initial backend response may take 30-60 seconds (cold start)
+- Subsequent responses typically 1-3 seconds
+- 3D model loading time approximately 2 seconds
 
-1. Create avatar on ReadyPlayerMe
-2. Export as GLB
-3. Convert with GLTFJSX: `npx gltfjsx model.glb`
-4. Verify VISEME morph targets exist
-5. Update Avatar.jsx with new model path
+## Known Limitations
 
-##  Performance Metrics
+- Backend hosted on free tier (cold start delays)
+- No WebSocket support (HTTP polling only)
+- No real-time TTS integration
+- Pre-generated VISEME data required for lip-sync
+- No authentication or user management
+- Single avatar model per session
 
-- **FPS**: 60 (constant)
-- **Lip-sync Latency**: <50ms
-- **VISEME Accuracy**: 95%+
-- **Memory Usage**: ~80MB
-- **Initial Load Time**: ~2 seconds
+## Future Enhancements
 
-##  Contributing
+Potential improvements for future development:
 
-This is a hackathon project. For future contributions:
+**Phase 1: Real-time Features**
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
+- WebSocket integration for live updates
+- Real-time VISEME generation
+- ElevenLabs TTS integration for dynamic audio
 
-## 📄 License
+**Phase 2: Advanced AI**
 
-MIT License - See LICENSE file for details
+- Voice input (Speech-to-Text)
+- Context-aware conversation memory
+- Emotion detection and responses
+- Multiple AI personality options
 
-##  Acknowledgments
+**Phase 3: User Experience**
 
-### Open Source Libraries
+- Multiple avatar model selection
+- Custom avatar upload
+- Mobile responsive design improvements
+- Session recording and playback
 
-- Three.js - 3D rendering
+## Documentation
+
+Additional documentation available:
+
+- `SETUP.md` - Detailed setup instructions
+- `docs/API.md` - API endpoint documentation
+- `docs/ARCHITECTURE.md` - System architecture details
+- `GEMINI_API_INTEGRATION.md` - Gemini API integration guide
+- `VISEME_FORMAT.md` - VISEME format specification
+
+## License
+
+MIT License
+
+## Acknowledgments
+
+**Open Source Libraries:**
+
+- Three.js - 3D rendering engine
 - React Three Fiber - React renderer for Three.js
+- @react-three/drei - Three.js helpers
+- wawa-lipsync - VISEME generation
+- Google Generative AI - Gemini API client
+
+**Assets:**
+
 - ReadyPlayerMe - Avatar creation platform
-  
-### Learning Resources
+- Mixamo - Animation library (FBX files)
 
-- Three.js Documentation
-- React Three Fiber Docs
-- VISEME Specifications (Oculus)
+**References:**
 
----
-
-**Built with ❤️ during the hackathon**
+- Oculus VISEME specification
+- Three.js documentation
+- React Three Fiber documentation
