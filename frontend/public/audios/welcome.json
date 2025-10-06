@@ -1,0 +1,158 @@
+{
+  "metadata": {
+    "soundFile": "welcome.mp3",
+    "duration": 5.92
+  },
+  "mouthCues": [
+    {
+      "start": 0,
+      "end": 0.12,
+      "value": "A"
+    },
+    {
+      "start": 0.14,
+      "end": 0.29,
+      "value": "D"
+    },
+    {
+      "start": 0.29,
+      "end": 0.46,
+      "value": "X"
+    },
+    {
+      "start": 0.47,
+      "end": 0.59,
+      "value": "E"
+    },
+    {
+      "start": 0.59,
+      "end": 0.83,
+      "value": "X"
+    },
+    {
+      "start": 0.83,
+      "end": 1.07,
+      "value": "E"
+    },
+    {
+      "start": 1.09,
+      "end": 1.21,
+      "value": "E"
+    },
+    {
+      "start": 1.21,
+      "end": 1.3,
+      "value": "E"
+    },
+    {
+      "start": 1.31,
+      "end": 1.42,
+      "value": "E"
+    },
+    {
+      "start": 1.42,
+      "end": 2.07,
+      "value": "E"
+    },
+    {
+      "start": 2.07,
+      "end": 2.15,
+      "value": "A"
+    },
+    {
+      "start": 2.15,
+      "end": 2.22,
+      "value": "A"
+    },
+    {
+      "start": 2.26,
+      "end": 2.32,
+      "value": "D"
+    },
+    {
+      "start": 2.36,
+      "end": 2.44,
+      "value": "E"
+    },
+    {
+      "start": 2.47,
+      "end": 2.84,
+      "value": "E"
+    },
+    {
+      "start": 2.84,
+      "end": 2.94,
+      "value": "D"
+    },
+    {
+      "start": 2.94,
+      "end": 3.31,
+      "value": "E"
+    },
+    {
+      "start": 3.31,
+      "end": 3.41,
+      "value": "E"
+    },
+    {
+      "start": 3.41,
+      "end": 3.46,
+      "value": "E"
+    },
+    {
+      "start": 3.46,
+      "end": 3.7,
+      "value": "D"
+    },
+    {
+      "start": 3.7,
+      "end": 4.14,
+      "value": "E"
+    },
+    {
+      "start": 4.14,
+      "end": 4.21,
+      "value": "D"
+    },
+    {
+      "start": 4.21,
+      "end": 4.36,
+      "value": "E"
+    },
+    {
+      "start": 4.39,
+      "end": 4.58,
+      "value": "E"
+    },
+    {
+      "start": 4.58,
+      "end": 4.67,
+      "value": "D"
+    },
+    {
+      "start": 4.67,
+      "end": 5.19,
+      "value": "E"
+    },
+    {
+      "start": 5.19,
+      "end": 5.27,
+      "value": "A"
+    },
+    {
+      "start": 5.27,
+      "end": 5.38,
+      "value": "A"
+    },
+    {
+      "start": 5.38,
+      "end": 5.52,
+      "value": "X"
+    },
+    {
+      "start": 5.52,
+      "end": 5.92,
+      "value": "E"
+    }
+  ]
+}

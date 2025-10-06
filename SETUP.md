@@ -18,68 +18,53 @@ git clone <your-repository-url>
 cd ai-avatar-companion
 ```
 
-### 2. Setup Avatar Engine (Backend)
+### 2. Install Dependencies
 
 ```bash
-cd Backend
+cd frontend
 npm install
-cp .env.example .env
-# Edit .env if needed
+```
+
+### 3. Start the Application
+
+```bash
 npm run dev
 ```
 
-The avatar engine will start on http://localhost:5173
-
-### 3. Setup Frontend
-
-Open a new terminal:
-
-```bash
-cd Frontend-New
-npm install
-cp .env.example .env
-# Edit .env if needed
-npm start
-```
-
-The frontend will start on http://localhost:3000
+The application will start on http://localhost:3000
 
 ### 4. Access the Application
 
 Open your browser and navigate to:
+
 ```
 http://localhost:3000
 ```
 
 You should see:
-- The AI avatar in the center
+
+- The AI avatar rendered directly in the center (using Three.js Canvas)
 - Chat interface at the bottom
 - Sidebar with conversation history
 - Theme toggle
+- Avatar enable/disable controls
 
 ## Troubleshooting
 
 ### Avatar Not Loading
 
-1. Check that Backend is running on port 5173
-2. Check browser console for errors
-3. Ensure CORS is not blocking iframe
+1. Check browser console for errors
+2. Ensure all 3D assets are in `Frontend-New/public/` directory
+3. Check that WebGL is supported in your browser
+4. Try refreshing the page
 
 ### Port Already in Use
 
-If port 3000 or 5173 is in use:
+If port 3000 is in use:
 
-**Change Backend Port:**
 ```bash
-# In Backend/.env
-VITE_PORT=5174
-```
-
-**Change Frontend Port:**
-```bash
-# In Frontend-New/.env
-VITE_PORT=3001
-VITE_AVATAR_ENGINE_URL=http://localhost:5174
+# In frontend directory, edit vite.config.js or run:
+npm run dev -- --port 3001
 ```
 
 ### Modules Not Found
@@ -95,13 +80,15 @@ npm install
 
 ### Test Avatar Animation
 
-1. The avatar should play a greeting animation on load
-2. Click the "Disable" button in the top-right
-3. Click "Enable" - avatar should greet again
+1. The avatar should play a greeting animation on load (after ~1 second)
+2. Click the "Disable" button in the top-right - avatar view disappears
+3. Click "Enable" - avatar should re-appear and greet again
+4. Avatar should return to idle animation automatically
 
 ### Test Chat
 
 Try these questions:
+
 - "What is photosynthesis?"
 - "Explain calculus"
 - "How to write an essay?"
@@ -134,6 +121,7 @@ npm run build
 ## Environment Variables
 
 ### Backend (.env)
+
 ```
 VITE_PORT=5173
 VITE_AVATAR_MODEL_PATH=/models/646d9dcdc8a5f5bddbfac913.glb
@@ -142,6 +130,7 @@ VITE_HEAD_FOLLOW=true
 ```
 
 ### Frontend (.env)
+
 ```
 VITE_PORT=3000
 VITE_AVATAR_ENGINE_URL=http://localhost:5173
@@ -182,6 +171,7 @@ Both applications support hot module replacement (HMR). Changes to code will ref
 ## Support
 
 For issues or questions:
+
 - Check `docs/ARCHITECTURE.md` for technical details
 - Check `docs/API.md` for API specification
 - Review component README files
