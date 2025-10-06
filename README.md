@@ -4,7 +4,15 @@ An innovative web application featuring a 3D AI avatar with real-time lip synchr
 
 ## Project Overview
 
-This project implements an interactive AI companion with a focus on natural, human-like interaction through advanced lip-synchronization technology. Instead of relying on traditional video streaming, we utilize VISEME-based animation for efficient, low-latency avatar communication.
+This project implements an interactive AI companion with a focus on natural, human-like interaction through advanced lip-synchronization technology. Instead of relying on traditional video streaming, [...]
+
+## Demo Screenshot
+
+Here is a screenshot of the AI Companion application in action:
+
+![AI Companion Demo Screenshot](docs/demo.png)
+
+---
 
 ### Key Features
 
