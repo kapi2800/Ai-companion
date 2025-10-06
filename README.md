@@ -8,15 +8,15 @@ This project implements an interactive AI companion with a focus on natural, hum
 
 ### Key Features
 
-- **🤖 Gemini AI Integration** - Powered by Google Gemini API for intelligent responses
-- **💬 Real-time Chat** - Interactive conversation with AI companion
-- **🎭 Real-time Lip Synchronization** - VISEME-based mouth animation synchronized with audio
-- **👤 3D Avatar Rendering** - Customizable ReadyPlayerMe avatar with Three.js
-- **🎨 Dark/Light Theme** - Persistent theme switching
-- **🎬 Animation System** - Greeting, Idle, and dynamic state management
-- **🎵 Audio Upload System** - Upload custom audio with automatic lip-sync generation
-- **⚡ High Performance** - 60 FPS rendering, <50ms latency
-- **🏗️ Unified Architecture** - Single application with integrated 3D rendering
+- ** Gemini AI Integration** - Powered by Google Gemini API for intelligent responses
+- ** Real-time Chat** - Interactive conversation with AI companion
+- ** Real-time Lip Synchronization** - VISEME-based mouth animation synchronized with audio
+- ** 3D Avatar Rendering** - Customizable ReadyPlayerMe avatar with Three.js
+- ** Dark/Light Theme** - Persistent theme switching
+- ** Animation System** - Greeting, Idle, and dynamic state management
+- ** Audio Upload System** - Upload custom audio with automatic lip-sync generation
+- ** High Performance** - 60 FPS rendering, <50ms latency
+- ** Unified Architecture** - Single application with integrated 3D rendering
 
 ## Architecture
 
@@ -164,7 +164,7 @@ ai-avatar-companion/
 
 That's it! The chatbot is now powered by your deployed Gemini API! 🚀
 
-## 💡 How It Works
+## How It Works
 
 ### VISEME-Based Lip Synchronization
 
@@ -218,7 +218,7 @@ Each VISEME is mapped to specific phonemes and rendered as 3D morph targets on t
 - Smooth transitions between states
 - Frame-perfect synchronization
 
-## 🧪 Testing
+##  Testing
 
 ### Chat with the AI:
 
@@ -240,7 +240,7 @@ Try asking anything! The Gemini AI can handle:
 4. Use Leva controls to play the audio
 5. Watch the avatar's mouth sync with your audio!
 
-## 🔮 Future Enhancements
+##  Future Enhancements
 
 ### Phase 1: WebRTC Integration
 
@@ -264,7 +264,7 @@ Try asking anything! The Gemini AI can handle:
 - [ ] Recording functionality
 - [ ] Mobile app version
 
-## 🛠️ Development
+##  Development
 
 ### Audio Processing Tool
 
@@ -286,7 +286,7 @@ This uses the modified rhubarb-lip-sync library to convert audio files into VISE
 4. Verify VISEME morph targets exist
 5. Update Avatar.jsx with new model path
 
-## 📊 Performance Metrics
+##  Performance Metrics
 
 - **FPS**: 60 (constant)
 - **Lip-sync Latency**: <50ms
@@ -294,7 +294,7 @@ This uses the modified rhubarb-lip-sync library to convert audio files into VISE
 - **Memory Usage**: ~80MB
 - **Initial Load Time**: ~2 seconds
 
-## 🤝 Contributing
+##  Contributing
 
 This is a hackathon project. For future contributions:
 
@@ -308,36 +308,19 @@ This is a hackathon project. For future contributions:
 
 MIT License - See LICENSE file for details
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 ### Open Source Libraries
 
 - Three.js - 3D rendering
 - React Three Fiber - React renderer for Three.js
 - ReadyPlayerMe - Avatar creation platform
-- rhubarb-lip-sync (modified) - Phoneme detection
-
+  
 ### Learning Resources
 
 - Three.js Documentation
 - React Three Fiber Docs
 - VISEME Specifications (Oculus)
-- WebRTC Documentation
-
-## 📞 Contact
-
-For questions or feedback:
-
-- Email: [your-email]
-- GitHub: [your-github]
-- LinkedIn: [your-linkedin]
-
-## 🏆 Hackathon Information
-
-**Event**: AI Companion Video Call & Streaming Hackathon
-**Task**: Task 1 - AI Companion Video Call & Streaming
-**Approach**: VISEME-based 3D Avatar with Real-time Lip Synchronization
-**Innovation**: Efficient alternative to video streaming for avatar communication
 
 ---
 
